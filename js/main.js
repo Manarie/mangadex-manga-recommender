@@ -36,45 +36,49 @@ fetch('https://api.mangadex.org/auth/login', authOptions)
           console.log(`error ${err}`)
       });
 */
+
 //-==========================================================================================-//
 //get list of manga
+
 let mangaTitle
 let mangaAltTitle
 let mangaDescriptionEN
-let lastVolume
-let lastChapter
+let MangaLastVolume
+let MangaLastChapter
 let mangaID
-let offset = getRandomInt(48461)
+let MangaContentRating
+let offset = getRandomInt(9000)
 let oneOfTen = getRandomInt(10)
 let dataStore
 
+let mangaCover
 
 
+/* -== old ==-
 const mangaOptions = {
     method: 'GET',
     headers: {
-      'Origin': 'HTTP://http://127.0.0.2:3800/',
       'accept': 'application/json',
-      'content-type': 'application/json',
+      'content-type': 'application/json'
     },
     mode: "cors"
 }
 
-fetch(`https://api.mangadex.org/manga?limit=10&offset=0`, mangaOptions)
+fetch(`https://api.mangadex.org/manga?limit=10&offset=${offset}`, mangaOptions)
     .then(res => res.json()) // parse response as JSON
     .then(data => {
       console.log(data)
       dataStore = data
       
 
-      mangaTitle = data.Object[0].title.en
-      mangaAltTitle = data.Object[0].altTitles[0]
-      mangaDescriptionEN = data.Object[0].description.en
-      //linkToManga = data.Object[oneOfTen].links
-      //lastVolume = data.Object[oneOfTen]
-      //lastChapter = data.Object[oneOfTen]
+      mangaTitle = data.data[oneOfTen].attributes.title.en
+      mangaAltTitle = data.data[oneOfTen].attributes.altTitles[0].en
+      mangaDescriptionEN = data.data[oneOfTen].attributes.description.en
+      mangaID = data.data[oneOfTen].id
+      lastVolume = data.data[oneOfTen].attributes.lastVolume
+      lastChapter = data.data[oneOfTen].attributes.lastChaper
 
-      //ex: dataStore.data[0].attributes.title.en
+      //ex: data.data[0].attributes.title.en
       //https://api.mangadex.org/swagger.html#/Manga/get-search-manga
       
     })
@@ -82,11 +86,48 @@ fetch(`https://api.mangadex.org/manga?limit=10&offset=0`, mangaOptions)
     .catch(err => {
         console.log(`error ${err}`)
     });
+*/
+
+function arrToUl(root, arr){
+  for (let i = 0; i < arr.length; i++){
+    let li = document.createElement('li');
+    li.appendChild(document.createTextNode(arr[i].attributes.name.en))
+    root.appendChild(li)
+  }
+}
+
+//better way to get manga stuff
+
+async function getMangaStuff(url =''){
+  const res = await fetch(url, {
+    headers: {
+      'accept': 'application/json',
+      'content-type': 'application/json'
+    },
+  });
+  return res.json();
+}
 
 
+getMangaStuff(`https://api.mangadex.org/manga?limit=10&offset=${offset}&includes[]=author&includes[]=artist&includes[]=cover_art`)
+  .then(data => {
+    console.log(data)
+    dataStore = data
+
+    document.querySelector('#mangaTitle').innerText = data.data[oneOfTen].attributes.title.en
+    mangaAltTitle = data.data[oneOfTen].attributes.altTitles[0].en
+    document.querySelector('#description') = data.data[oneOfTen].attributes.description.en
+    mangaID = data.data[oneOfTen].id
+    lastVolume = data.data[oneOfTen].attributes.lastVolume
+    lastChapter = data.data[oneOfTen].attributes.lastChaper
 
 
+    let mangaTags = data.data.attributes.tags
+    arrToUl(document.querySelector('#tags'), mangaTags)
 
+
+  });
+  
 
 //post fetch ref
 /*async function postData(url = '', data = {}) {
@@ -110,4 +151,3 @@ fetch(`https://api.mangadex.org/manga?limit=10&offset=0`, mangaOptions)
   .then(data => {
     console.log(data); // JSON data parsed by `data.json()` call
   });*/
-
