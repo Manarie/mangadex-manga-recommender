@@ -42,7 +42,7 @@ fetch('https://api.mangadex.org/auth/login', authOptions)
 
 let mangaTitle
 let mangaAltTitle
-let mangaDescriptionEN
+let mangaDescriptionEN = ''
 let MangaLastVolume
 let MangaLastChapter
 let mangaID
@@ -115,14 +115,29 @@ getMangaStuff(`https://api.mangadex.org/manga?limit=10&offset=${offset}&includes
     dataStore = data
 
     document.querySelector('#mangaTitle').innerText = data.data[oneOfTen].attributes.title.en
-    mangaAltTitle = data.data[oneOfTen].attributes.altTitles[0].en
-    document.querySelector('#description') = data.data[oneOfTen].attributes.description.en
+    /*document.querySelector('#altTitle').innerText += ` ${data.data[oneOfTen].attributes.altTitles[1].en}`
+    if (document.querySelector('#altTitle').innerText === 'Alt title: undefined')
+      document.querySelector('#altTitle').remove()*/
+    document.querySelector('#description').innerText = data.data[oneOfTen].attributes.description.en
     mangaID = data.data[oneOfTen].id
     lastVolume = data.data[oneOfTen].attributes.lastVolume
     lastChapter = data.data[oneOfTen].attributes.lastChaper
+    
+    //get manga cover
+    let relNumCover = 0
+    while(!data.data[oneOfTen].relationships[relNumCover].attributes.fileName){
+      ++relNumCover
+      if (relNumCover == 5)
+        break;
+    }
+    document.querySelector('#coverArt').src = `https://uploads.mangadex.org/covers/${mangaID}/${data.data[oneOfTen].relationships[relNumCover].attributes.fileName}`
+    
+    //get link to manga
+    document.querySelector('#linkToManga').href = `https://mangadex.org/manga/${mangaID}`
 
-
-    let mangaTags = data.data.attributes.tags
+    
+    //get tags and add them to DOM
+    let mangaTags = data.data[oneOfTen].attributes.tags
     arrToUl(document.querySelector('#tags'), mangaTags)
 
 

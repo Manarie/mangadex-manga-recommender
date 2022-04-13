@@ -11,12 +11,13 @@
 /* LAYOUT
 /*******************************************/
 body{
-  background-color: black;
+  background-color: rgb(19, 19, 19);
   color: lightgray;
   text-align: center;
 }
 img{
   box-shadow: 5px 10px #888888;
+  height: 600px;
 }
 
 
