@@ -118,7 +118,7 @@ getMangaStuff(`https://api.mangadex.org/manga?limit=10&offset=${offset}&includes
     /*document.querySelector('#altTitle').innerText += ` ${data.data[oneOfTen].attributes.altTitles[1].en}`
     if (document.querySelector('#altTitle').innerText === 'Alt title: undefined')
       document.querySelector('#altTitle').remove()*/
-    document.querySelector('#description').innerText = data.data[oneOfTen].attributes.description.en
+    description = data.data[oneOfTen].attributes.description.en
     mangaID = data.data[oneOfTen].id
     lastVolume = data.data[oneOfTen].attributes.lastVolume
     lastChapter = data.data[oneOfTen].attributes.lastChaper
@@ -140,6 +140,10 @@ getMangaStuff(`https://api.mangadex.org/manga?limit=10&offset=${offset}&includes
     let mangaTags = data.data[oneOfTen].attributes.tags
     arrToUl(document.querySelector('#tags'), mangaTags)
 
+    //if description is not empty add it to DOM
+    if (description != undefined){
+      document.querySelector('#description').innerText = description
+    }
 
   });
   
