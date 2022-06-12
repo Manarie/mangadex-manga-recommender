@@ -47,7 +47,7 @@ let MangaLastVolume
 let MangaLastChapter
 let mangaID
 let MangaContentRating
-let offset = getRandomInt(9000)
+let offset = getRandomInt(11000)
 let oneOfTen = getRandomInt(10)
 let dataStore
 
@@ -146,7 +146,18 @@ getMangaStuff(`https://api.mangadex.org/manga?limit=10&offset=${offset}&includes
     }
 
   });
-  
+
+//sidenav
+document.querySelector('.openNavBtn').addEventListener('click', () => {
+  /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
+  document.getElementById("mySideNav").style.width = "250px";
+  document.getElementById("main").style.marginLeft = "250px";
+})
+document.querySelector('.closeNavBtn').addEventListener('click', () => {
+  /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
+  document.getElementById("mySideNav").style.width = "0";
+  document.getElementById("main").style.marginLeft = "0";
+})
 
 //post fetch ref
 /*async function postData(url = '', data = {}) {
@@ -170,3 +181,6 @@ getMangaStuff(`https://api.mangadex.org/manga?limit=10&offset=${offset}&includes
   .then(data => {
     console.log(data); // JSON data parsed by `data.json()` call
   });*/
+
+  //compression for storing imgs on local storage
+  //https://github.com/pieroxy/lz-string
