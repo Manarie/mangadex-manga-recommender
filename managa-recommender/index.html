@@ -5,39 +5,38 @@
     	<meta name="description" content="This is where your description goes">
     	<meta name="keywords" content="one, two, three">
 
-		<title>Manga-Recommender</title>
+		<title>Manga Recommender</title>
 
 		<!-- external CSS link -->
 		<link rel="stylesheet" href="css/normalize.css">
 		<link rel="stylesheet" href="css/style.css">
 	</head>
 	<body>
-		<div id="mySideNav" class="sidenav">
-			<a href="javascript:void(0)" class="closeNavBtn">&times;</a>
-			<a href="#">About</a>
-			<a href="#">Services</a>
-			<a href="#">Clients</a>
-			<a href="#">Contact</a>
-		</div>
-		<span class="openNavBtn" onclick="openNav()">open</span>
-		<div id="main">
-			<section id="recWrapper">
-				<h1>Manga Recommender V1.314159</h1>
-				<h2 id="mangaTitle">Manga Title</h2>
-				<a id="linkToManga" href=""><img id="coverArt" src="" alt="Cover Art"></a>
-				<h3 id="status"></h3>
-				<article id="mangaInfo">
-					<span id="altTitle"></span>
-					<span id="author"></span>
-					<span id="artist"></span>
+		<section id="recWrapper">
+			<h1>Manga Recommender V1.314159</h1>
+			<h2 id="mangaTitle">Manga Title</h2>
+			<a id="linkToManga" href="" target="_blank" rel="noreferrer noopener"><img id="coverArt" src="" alt="Cover Art"></a>
+			<h3 id="status"></h3>
+			<article id="mangaInfo">
+				<span id="altTitle"></span>
+				<span id="author"></span>
+				<span id="artist"></span>
+				<div class="descContainer">
+					<h3>Description</h3>
+					<p id="description"></p>
+				</div>
+				-==================================================-
+				<div class="listContainer">
+					<h3 class="tagsHeader">Tags</h3>
 					<ul id="tags">
 					</ul>
-					<p id="description">desc</p>
-					</p>
-				</article>
+				</div>
+	
+				
+			</article>
 
-			</section>
-		</div>
+		</section>
+
 		<script type="text/javascript" src="js/main.js"></script>
 	</body>
 </html>
