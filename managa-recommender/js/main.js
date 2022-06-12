@@ -150,13 +150,13 @@ getMangaStuff(`https://api.mangadex.org/manga?limit=10&offset=${offset}&includes
 //sidenav
 document.querySelector('.openNavBtn').addEventListener('click', () => {
   /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
-  document.getElementById("mySideNav").style.width = "250px";
-  document.getElementById("main").style.marginLeft = "250px";
+  document.querySelector("#mySideNav").style.width = "250px";
+  //document.querySelector("#recWrapper").style.marginLeft = "250px";
 })
 document.querySelector('.closeNavBtn').addEventListener('click', () => {
   /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
-  document.getElementById("mySideNav").style.width = "0";
-  document.getElementById("main").style.marginLeft = "0";
+  document.querySelector("#mySideNav").style.width = "0";
+  //document.querySelector("#recWrapper").style.marginLeft = "0";
 })
 
 //post fetch ref
