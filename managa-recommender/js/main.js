@@ -1,3 +1,5 @@
+document.addEventListener("DOMContentLoaded", function(){ console.log('loaded') });
+
 let currentMangaList
 let authToken
 
@@ -108,15 +110,32 @@ function addHistoryToStorage(link, title, cover){
 function addHistory(root){
   let link = JSON.parse(localStorage.getItem('manga'))
   for(let i = 0; i < link.six.length; ++i){
+    let div = document.createElement('div')
+    let li = document.createElement('li');
     let a = document.createElement('a');
-    var image = document.createElement('img')
+
+    let deleteBtn = document.createElement('span')
+    deleteBtn.classList.add('deleteHistoryItem')
+    deleteBtn.innerText = '×'
+    li.appendChild(deleteBtn)
+
+    let image = document.createElement('img')
     image.src = link.six[i].cover;
     a.appendChild(image)
-    title = a.appendChild(document.createElement('span'))
+
+    let title = document.createElement('span')
     title.innerText = link.six[i].title
+    a.appendChild(title)
+
     a.classList.add('historyItem')
     a.href = link.six[i].link;
-    root.appendChild(a);
+
+    div.appendChild(deleteBtn)
+    div.appendChild(a)
+
+    li.setAttribute(`num`, `${i}`)
+    li.appendChild(div)
+    root.appendChild(li);
   }
 }
 
@@ -183,7 +202,25 @@ getMangaStuff(`https://api.mangadex.org/manga?limit=10&offset=${offset}&includes
     //history
     addHistoryToStorage(mangaLink, mangaTitle, coverArt)
 
-    addHistory(document.querySelector('#mySideNav'), 'a')
+    addHistory(document.querySelector('#history'))
+
+    //delete sparate history entry
+    var remove = function(){
+      this.parentNode.remove();
+      currentHistory = JSON.parse(localStorage.getItem('manga'))
+      num = this.parentNode.getAttribute('num')
+      console.log(this.parentNode.value)
+      console.log(num)
+      currentHistory.six.splice(num, 1)
+      localStorage.setItem('manga', JSON.stringify(currentHistory))
+    };
+  
+    var lis = document.querySelectorAll('#history li');
+    var button = document.querySelectorAll('#history div');
+    
+    for (var i = 0, len = lis.length; i < len; i++) {
+        button[i].addEventListener('click', remove, false);
+    }
 
   });
   
@@ -193,13 +230,11 @@ document.querySelector('.openNavBtn').addEventListener('click', () => {
   /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
   document.querySelector("#mySideNav").style.left = "0px";
   document.querySelector("#recWrapper").style.marginLeft = "250px";
-  document.querySelector(".closeNavBtn").style.visibility = 'visible';
 })
 document.querySelector('.closeNavBtn').addEventListener('click', () => {
   /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
   document.querySelector("#mySideNav").style.left = "-250px";
   document.querySelector("#recWrapper").style.marginLeft = "0";
-  // document.querySelector(".openNavBtn").style.visibility = visible;
 })
 
 //post fetch ref

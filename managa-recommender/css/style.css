@@ -46,9 +46,14 @@ ul{
   text-decoration: underline;
 }
 
+#history{
+  padding-left: 0px;
+}
+
 .historyItem{
   overflow: hidden;
   height: 100px;
+  margin-right: 5px;
 }
 
 .historyItem > span{
@@ -58,6 +63,17 @@ ul{
 .historyItem > img{
   float: left;
   width: 50px;
+}
+
+.deleteHistoryItem{
+  position:absolute;
+  padding: 11% 6px;
+  font-size: 2rem;
+}
+
+.deleteHistoryItem:hover {
+  color: #f1f1f1;
+  cursor: pointer;
 }
 
 
@@ -74,8 +90,8 @@ ul{
   z-index: 10; /* Stay on top */
   top: 0; /* Stay at the top */
   left: -250px;
-  /*background-color: #111;  Black*/
-  background: rgba(0,0,0,0.0);
+  background-color: #111;  Black
+  /* background: rgba(0,0,0,0.0); */
   overflow-x: hidden; /* Disable horizontal scroll */
   padding-top: 80px; /* Place content 60px from the top */
   transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
@@ -92,6 +108,11 @@ ul{
   transition: 0.3s;
 }
 
+#mySideNav h3{
+  font-size: 2rem;
+  margin: 0px 0px;
+}
+
 /* When you mouse over the navigation links, change their color */
 .sidenav a:hover {
   color: #f1f1f1;
@@ -106,7 +127,6 @@ ul{
   font-size: 50px;
 }
 .closeNavBtn{
-  visibility: hidden;
   transition: 1s;
 }
 
