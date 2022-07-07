@@ -87,18 +87,19 @@ fetch(`https://api.mangadex.org/manga?limit=10&offset=${offset}`, mangaOptions)
     });
 */
 
-let historyArray = [];
+let historyToBeStored = {};
 
 function addHistoryToStorage(link, title, cover){
-  let b = {six: [
-    {link: link, title: title, cover: cover},
-    {link: link, title: title, cover: cover},
-    {link: link, title: title, cover: cover},
-    {link: link, title: title, cover: cover},
-    {link: link, title: title, cover: cover},
-    {link: link, title: title, cover: cover}
-  ]}
-  localStorage.setItem('manga', JSON.stringify(b))
+  if (localStorage.getItem('manga') === null) {
+    historyToBeStored = {
+      six: [{link: link, title: title, cover: cover}]
+    }
+  } else {
+    historyToBeStored = JSON.parse(localStorage.getItem('manga'))
+    historyToBeStored.six.push({link: link, title: title, cover: cover})
+  }
+  
+  localStorage.setItem('manga', JSON.stringify(historyToBeStored))
   
 }
 
@@ -106,16 +107,17 @@ function addHistoryToStorage(link, title, cover){
 
 function addHistory(root){
   let link = JSON.parse(localStorage.getItem('manga'))
-  let a = document.createElement('a');
-  var image = document.createElement('img')
-  image.src = link.six[0].cover;
-  a.appendChild(image)
-  title = a.appendChild(document.createElement('span'))
-  title.innerText = link.six[0].title
-  a.classList.add('historyItem')
-  a.href = link.six[0].link;
-  root.appendChild(a);
-  console.log(link.six[0])
+  for(let i = 0; i < link.six.length; ++i){
+    let a = document.createElement('a');
+    var image = document.createElement('img')
+    image.src = link.six[i].cover;
+    a.appendChild(image)
+    title = a.appendChild(document.createElement('span'))
+    title.innerText = link.six[i].title
+    a.classList.add('historyItem')
+    a.href = link.six[i].link;
+    root.appendChild(a);
+  }
 }
 
 function arrToUl(root, arr){
@@ -189,14 +191,14 @@ getMangaStuff(`https://api.mangadex.org/manga?limit=10&offset=${offset}&includes
 //sidenav
 document.querySelector('.openNavBtn').addEventListener('click', () => {
   /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
-  document.querySelector("#mySideNav").style.width = "250px";
-  // document.querySelector("#recWrapper").style.marginLeft = "250px";
-  // document.querySelector(".openNavBtn").style.visibility = hidden;
+  document.querySelector("#mySideNav").style.left = "0px";
+  document.querySelector("#recWrapper").style.marginLeft = "250px";
+  document.querySelector(".closeNavBtn").style.visibility = 'visible';
 })
 document.querySelector('.closeNavBtn').addEventListener('click', () => {
   /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
-  document.querySelector("#mySideNav").style.width = "0";
-  // document.querySelector("#recWrapper").style.marginLeft = "0";
+  document.querySelector("#mySideNav").style.left = "-250px";
+  document.querySelector("#recWrapper").style.marginLeft = "0";
   // document.querySelector(".openNavBtn").style.visibility = visible;
 })
 
