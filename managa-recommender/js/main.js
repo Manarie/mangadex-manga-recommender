@@ -47,12 +47,11 @@ let MangaLastVolume
 let MangaLastChapter
 let mangaID
 let MangaContentRating
-let offset = getRandomInt(11000)
+let offset = getRandomInt(10000)
 let oneOfTen = getRandomInt(10)
 let dataStore
 
 let mangaCover
-
 
 /* -== old ==-
 const mangaOptions = {
@@ -88,6 +87,37 @@ fetch(`https://api.mangadex.org/manga?limit=10&offset=${offset}`, mangaOptions)
     });
 */
 
+let historyArray = [];
+
+function addHistoryToStorage(link, title, cover){
+  let b = {six: [
+    {link: link, title: title, cover: cover},
+    {link: link, title: title, cover: cover},
+    {link: link, title: title, cover: cover},
+    {link: link, title: title, cover: cover},
+    {link: link, title: title, cover: cover},
+    {link: link, title: title, cover: cover}
+  ]}
+  localStorage.setItem('manga', JSON.stringify(b))
+  
+}
+
+
+
+function addHistory(root){
+  let link = JSON.parse(localStorage.getItem('manga'))
+  let a = document.createElement('a');
+  var image = document.createElement('img')
+  image.src = link.six[0].cover;
+  a.appendChild(image)
+  title = a.appendChild(document.createElement('span'))
+  title.innerText = link.six[0].title
+  a.classList.add('historyItem')
+  a.href = link.six[0].link;
+  root.appendChild(a);
+  console.log(link.six[0])
+}
+
 function arrToUl(root, arr){
   for (let i = 0; i < arr.length; i++){
     let li = document.createElement('li');
@@ -98,7 +128,7 @@ function arrToUl(root, arr){
 
 //better way to get manga stuff
 
-async function getMangaStuff(url =''){
+async function getMangaStuff(url = ''){
   const res = await fetch(url, {
     headers: {
       'accept': 'application/json',
@@ -114,7 +144,8 @@ getMangaStuff(`https://api.mangadex.org/manga?limit=10&offset=${offset}&includes
     console.log(data)
     dataStore = data
 
-    document.querySelector('#mangaTitle').innerText = data.data[oneOfTen].attributes.title.en
+    const mangaTitle = data.data[oneOfTen].attributes.title.en;
+    document.querySelector('#mangaTitle').innerText = mangaTitle;
     /*document.querySelector('#altTitle').innerText += ` ${data.data[oneOfTen].attributes.altTitles[1].en}`
     if (document.querySelector('#altTitle').innerText === 'Alt title: undefined')
       document.querySelector('#altTitle').remove()*/
@@ -130,14 +161,16 @@ getMangaStuff(`https://api.mangadex.org/manga?limit=10&offset=${offset}&includes
       if (relNumCover == 5)
         break;
     }
-    document.querySelector('#coverArt').src = `https://uploads.mangadex.org/covers/${mangaID}/${data.data[oneOfTen].relationships[relNumCover].attributes.fileName}`
+    const coverArt = `https://uploads.mangadex.org/covers/${mangaID}/${data.data[oneOfTen].relationships[relNumCover].attributes.fileName}`
+    document.querySelector('#coverArt').src = coverArt;
     
     //get link to manga
-    document.querySelector('#linkToManga').href = `https://mangadex.org/manga/${mangaID}`
+    const mangaLink = `https://mangadex.org/manga/${mangaID}`;
+    document.querySelector('#linkToManga').href = mangaLink;
 
     
     //get tags and add them to DOM
-    let mangaTags = data.data[oneOfTen].attributes.tags
+    const mangaTags = data.data[oneOfTen].attributes.tags
     arrToUl(document.querySelector('#tags'), mangaTags)
 
     //if description is not empty add it to DOM
@@ -145,20 +178,26 @@ getMangaStuff(`https://api.mangadex.org/manga?limit=10&offset=${offset}&includes
       document.querySelector('#description').innerText = description
     }
 
+    //history
+    addHistoryToStorage(mangaLink, mangaTitle, coverArt)
+
+    addHistory(document.querySelector('#mySideNav'), 'a')
+
   });
+  
 
 //sidenav
 document.querySelector('.openNavBtn').addEventListener('click', () => {
   /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
   document.querySelector("#mySideNav").style.width = "250px";
-  document.querySelector("#recWrapper").style.marginLeft = "250px";
-  document.querySelector(".openNavBtn").style.visibility = hidden;
+  // document.querySelector("#recWrapper").style.marginLeft = "250px";
+  // document.querySelector(".openNavBtn").style.visibility = hidden;
 })
 document.querySelector('.closeNavBtn').addEventListener('click', () => {
   /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
   document.querySelector("#mySideNav").style.width = "0";
-  document.querySelector("#recWrapper").style.marginLeft = "0";
-  document.querySelector(".openNavBtn").style.visibility = visible;
+  // document.querySelector("#recWrapper").style.marginLeft = "0";
+  // document.querySelector(".openNavBtn").style.visibility = visible;
 })
 
 //post fetch ref
