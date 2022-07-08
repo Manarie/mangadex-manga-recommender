@@ -209,10 +209,9 @@ getMangaStuff(`https://api.mangadex.org/manga?limit=10&offset=${offset}&includes
       this.parentNode.remove();
       currentHistory = JSON.parse(localStorage.getItem('manga'))
       num = this.parentNode.getAttribute('num')
-      console.log(this.parentNode.value)
-      console.log(num)
       currentHistory.six.splice(num, 1)
       localStorage.setItem('manga', JSON.stringify(currentHistory))
+      console.log('removed')
     };
   
     var lis = document.querySelectorAll('#history li');
@@ -221,6 +220,12 @@ getMangaStuff(`https://api.mangadex.org/manga?limit=10&offset=${offset}&includes
     for (var i = 0, len = lis.length; i < len; i++) {
         button[i].addEventListener('click', remove, false);
     }
+
+    //delete all history
+    document.querySelector('#clearHistory').addEventListener('click', () => {
+      lis.forEach(e => e.remove())
+      localStorage.clear();
+    })
 
   });
   

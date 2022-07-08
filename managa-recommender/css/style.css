@@ -50,6 +50,10 @@ ul{
   padding-left: 0px;
 }
 
+#history > li{
+  list-style-type: none;
+}
+
 .historyItem{
   overflow: hidden;
   height: 100px;
@@ -76,7 +80,13 @@ ul{
   cursor: pointer;
 }
 
-
+#clearHistory{
+  border:none;
+}
+#clearHistory:hover{
+  color: red;
+  cursor: pointer;
+}
 
 /******************************************
 /* ADDITIONAL STYLES
@@ -109,7 +119,7 @@ ul{
 }
 
 #mySideNav h3{
-  font-size: 2rem;
+  font-size: 1.5rem;
   margin: 0px 0px;
 }
 
